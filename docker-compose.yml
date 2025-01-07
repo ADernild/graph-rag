@@ -1,0 +1,26 @@
+services:
+  neo4j:
+    image: neo4j:5.7.0-community
+    environment:
+      - NEO4J_AUTH=${NEO4J_AUTH}
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - neo4j-data:/data
+  graph-rag:
+    build: .
+    environment:
+      - NEO4J_URI=${NEO4J_URI}
+      - NEO4J_USERNAME=${NEO4J_USERNAME}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+      - PYTHONUNBUFFERED=1
+    command: python main.py
+    volumes:
+      - .:/usr/src/app/src
+    depends_on:
+      - neo4j
+    stdin_open: true
+    tty: true
+volumes:
+  neo4j-data:

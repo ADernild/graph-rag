@@ -1,8 +1,8 @@
 from typing import List, Optional
 
-from langchain_community.graphs.graph_document import GraphDocument
 from langchain_core.documents import Document
 from langchain_experimental.graph_transformers import LLMGraphTransformer
+from langchain_neo4j.graphs.graph_document import GraphDocument
 from tqdm_loggable.auto import tqdm
 
 from config.graph_config import GraphConfig

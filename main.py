@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -31,19 +32,28 @@ graph_config = GraphConfig(
         "Due Date (M)",
     ],
     allowed_relationships=[
-        "LEAD",
-        "CONTRIBUTOR",
-        "PRINCIPAL_INVESTIGATOR",
-        "COORDINATOR",
-        "PARTNER",
-        "HAS_PERSON_MONTH",
-        "DEPENDS_ON",
-        "INCLUDES",
-        "IS_PART_OF",
-        "HAS_PART",
-        "HAS_MILESTONE",
+        ("Project", "INCLUDES", "Work Package (WP)"),
+        ("Organisation", "PRINCIPAL_INVESTIGATOR", "Project"),
+        ("Organisation", "COORDINATOR", "Project"),
+        ("Organisation", "PARTNER", "Project"),
+        ("Organisation", "LEAD", "Work Package (WP)"),
+        ("Organisation", "CONTRIBUTOR", "Work Package (WP)"),
+        ("Organisation", "HAS_PERSON_MONTH", "Work Package (WP)"),
+        ("Organisation", "LEAD", "Task (T)"),
+        ("Organisation", "CONTRIBUTOR", "Task (T)"),
+        ("Work Package (WP)", "HAS_MILESTONE", "Milestone (M)"),
+        ("Work Package (WP)", "HAS_DUE_DATE", "Due Date (M)"),
+        ("Milestone (M)", "HAS_DUE_DATE", "Due Date (M)"),
+        ("Task (T)", "IS_PART_OF", "Work Package (WP)"),
+        ("Task (T)", "INCLUDES", "Deliverable (D)"),
+        ("Task (T)", "HAS_MILESTONE", "Milestone (M)"),
+        ("Task (T)", "HAS_DUE_DATE", "Due Date (M)"),
+        ("Deliverable (D)", "HAS_MILESTONE", "Milestone (M)"),
+        ("Deliverable (D)", "HAS_DUE_DATE", "Due Date (M)"),
+        ("Deliverable (D)", "DEPENDS_ON", "Task (T)"),
     ],
 )
+
 directory_path = "data/"
 
 # Initialize PDFGraphTransformer with the LLM and Graph configurations
@@ -52,8 +62,10 @@ pdf_graph_transformer = PDFGraphTransformer(
 )
 
 # Load PDFs from directory and convert to graph
-graph_documents_filtered = pdf_graph_transformer.create_graph(num_documents=20)
+graph_documents_filtered = pdf_graph_transformer.create_graph(num_documents=30)
 
+with open("data.json", "w") as f:
+    json.dump(graph_documents_filtered, f)
 # Print graph details
 pdf_graph_transformer.print_graph_details(graph_documents_filtered)
 

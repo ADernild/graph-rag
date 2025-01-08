@@ -1,8 +1,8 @@
 import os
 from typing import List
 
-from langchain_community.graphs import Neo4jGraph
-from langchain_community.graphs.graph_document import GraphDocument
+from langchain_neo4j import Neo4jGraph
+from langchain_neo4j.graphs.graph_document import GraphDocument
 
 
 class Neo4jInterface:
@@ -13,4 +13,6 @@ class Neo4jInterface:
         self.graph = Neo4jGraph()
 
     def add_graph_documents(self, documents: List[GraphDocument]):
-        self.graph.add_graph_documents(documents)
+        self.graph.add_graph_documents(
+            documents, include_source=True, baseEntityLabel=True
+        )

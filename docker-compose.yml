@@ -3,11 +3,16 @@ services:
     image: neo4j:5.7.0-community
     environment:
       - NEO4J_AUTH=${NEO4J_AUTH}
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+      - NEO4J_PLUGINS=["apoc"]
     ports:
       - 7474:7474
       - 7687:7687
     volumes:
       - neo4j-data:/data
+
   graph-rag:
     build: .
     environment:

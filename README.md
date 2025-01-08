@@ -6,8 +6,8 @@ This project provides a structured approach to loading PDF documents, transformi
 ## Setup
 1. Clone the repository:
    ```sh
-   git clone <repository_url>
-   cd <repository_directory>
+   git clone https://github.com/ADernild/graph-rag
+   cd graph-rag
    ```
 2. Run docker-compose:
    ```sh
